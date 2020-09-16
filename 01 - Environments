@@ -1,0 +1,8 @@
+One great puppet advantage is that you can work with different environments
+for example development, operations, tests, and so on
+you need to create an structure to accomplish this goal then use it as you like
+It provides opportunity to test all the changes before applying to operations environment
+You can also save it on GIT and call it when needed
+Another item to observe is that you need to run puppet agent instead puppet apply in order to use environments
+
+

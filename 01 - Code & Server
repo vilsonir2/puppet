@@ -1,0 +1,40 @@
+Creating a file and a template yo use as example in CLI
+
+
+Create another subclass that creates a file and another that uses a template.
+
+    - into files directory
+    - a file, no demands
+
+example::file
+# example::file
+class example::file {
+  file { 'source-file':
+    path => '/tmp/example-file',
+    source => 'puppet:///modules/example/example-file',
+  }
+}
+
+    - into templates directory
+    - it demands to .erb extension
+    - it uses extended ruby to insert facts into your template
+
+example::template
+This is an example template
+Facts are available using @
+This nodes hostname is <%= @hostname %>
+This node has the following interfaces:
+<% @interfaces.split(',').each do |interface| -%>
+  <%= interface %>
+<% end -%>
+Done.
+
+
+class example::template {
+ file {'example-template':
+   path    => '/tmp/example-template',
+   content => template('example/example-template.erb')
+ }
+}
+
+

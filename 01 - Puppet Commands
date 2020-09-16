@@ -1,0 +1,121 @@
+To verify all facts
+# facter
+
+To verify Ip from eth1
+# facter networking.interfaces.eth0.ip
+
+To verify OS information
+# facter os
+
+Creating a manifest
+# vi hello.pp
+
+file { 'hello':
+  path => '/tmp/hello',
+  content => "Hello World!\n",
+}
+
+Run a manifest
+# puppet apply hello.pp
+
+
+
+Creating a manifest that is executer following an order
+# vi order.pp
+
+file {'first':
+  path => '/tmp/order/first',
+  content => "I'm first",
+  required => File['order'],
+}
+file {'order':
+  path => '/tmp/order',
+  ensure => 'directory'
+}
+
+# puppet apply order.pp
+
+
+
+Module:
+You need to create a directory called modules and inside this directory create all modules you need
+To each module is mandatory the manifests directory
+You need to define the class into the files, for example init.pp is the main file to the class example, so you start with
+class example {...}
+
+# mkdir -p modules/example/manifests
+
+Create init.pp
+# vi init.pp
+class example {
+  file { 'hello':
+    path => '/tmp/hello',
+    content => "Hello World!\n",
+  }
+  include example::goodbye 
+}
+
+Create goodbey.pp
+# vi goodbye.pp
+
+class example::goodbye {
+  file { 'goodbye':
+    path => '/tmp/bye',
+    content => "Good-bye Hello!\n",
+  }
+}
+ 
+Running a module
+Passing as parameter the module path and the name of the module to be executed
+
+# puppet apply --modulepath /root/puppet/stuff/modules -e 'include example'
+
+
+
+Inserting Files and templates ou our modules
+# Create the infrastructure
+# mkdir files templates
+
+Creating the file
+# cd files
+# vi example-file
+"Hello, this is a file inserted into a module, called by a class"
+
+# Creating the template - don't forget extension .erb
+# vi example-template.erb
+
+This is an example template
+Facts are available using @
+This nodes hostname is <%= @hostname %>
+This node has the following interfaces:
+<% @interfaces.split(',').each do |interface| -%>
+  <%= interface %>
+<% end -%>
+Done.
+
+
+Changing the manifests
+# cd ../manifests
+vi file.pp
+class example::file {
+  file { 'source-file':
+    path => '/tmp/example-file',
+    source => 'puppet:///modules/example/example-file',
+  }
+}
+
+Run the module
+# puppet apply --modulepath /root/puppet/stuff/modules -e 'include example::file'
+
+vi template.pp
+class example::template {
+ file {'example-template':
+   path    => '/tmp/example-template',
+   content => template('example/example-template.erb')
+ }
+}
+
+Run the module
+# puppet apply --modulepath /root/puppet/stuff/modules -e 'include example::template'
+
+

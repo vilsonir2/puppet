@@ -1,0 +1,51 @@
+R10K is a tool that help you to deploy git files
+You can deploy by environment
+You can deploy by repository
+
+
+Install R10K
+# yum install gem
+# gem install r10k
+
+Create a config file -> YAML file
+
+# vi /etc/puppetlabs/r10k/r10k.yml
+---
+:sources:
+ :control:
+   remote: '/srv/git/repos/control.git'
+   basedir: '/etc/puppetlabs/code/environments'
+   prefix: false
+
+Deploy the envoironment -> take care, it deleted all my previous environment
+# r10k deploy -c /etc/puppetlabs/r10k/r10k.yml environment
+
+
+Puppetfile:
+    - File that contains a series of modules that you include into your environment
+
+Puppet Forge:
+    - Is a public repository of modules
+
+Including modules into my repository and environment
+Create a PuppetFile
+# cd control
+# git branch 
+# vi Puppet
+mod 'puppetlabs/ntp', '4.1.0'
+mod 'puppetlabs/stdlib'file
+
+# r10k puppetfile check
+
+
+Adding to git
+
+# git add *
+# git commit -m 'Puppetfile'
+# git push origin production
+
+Deploying the environment
+# r10k deploy environment -p production -c /etc/puppetlabs/r10k/r10k.yml
+
+
+ 

@@ -1,0 +1,37 @@
+In the /etc/puppetlabs/code/environments you willl find the puppet environments
+
+The default environment is production
+
+# Each environment can have an environment.conf file. Its settings will only
+# affect its own environment. See docs for more info:
+# https://puppet.com/docs/puppet/latest/config_file_environment.html
+
+
+My environment.conf:
+modulepath = site:modules:$basemodulepath
+manifest = manifests/site.pp
+
+~                             
+my site.pp:
+
+node default {
+  notify {'This is a production environment!!!':}
+}
+
+Run puppet -> it runs the puppet client using the agent installed into the node(in this case the server is the node)
+# puppet agent -t
+
+Running a specific environment
+# puppet agent -t --environment development
+
+Using the previous created example module, you can copy it inside your environment
+# cd modules
+# cp -a /..../modules/example .
+
+You can include modules
+# vi manifests/site.pp
+node default {
+  notify {'This is a production environment!!!':}
+  include example
+}
+

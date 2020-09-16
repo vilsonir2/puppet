@@ -1,0 +1,43 @@
+To this infrastructure I am using 3 servers
+    - puppetca, 192.168.33.41
+    - puppetm1, 192.168.33.42
+    - puppetm2, 192.168.33.43
+
+PuppetCA:
+    - install the puppetserver
+    - You can change the memory requirements if you need
+        - vi /etc/sysconfig/puppetserver
+        # Modify this if you'd like to change the memory allocation, enable JMX, etc
+        JAVA_ARGS="-Xms500m -Xmx500m -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"
+
+    - change the hosts file to the fqdn -> puppetca.local.net
+  
+    - Creating a certificate authority
+        - # puppetserver ca list -a
+
+    - SetUp a CA
+        - # puppetserver ca setup     
+    
+    - Create a certificate
+        - # puppetserver ca generate --certname puppet.local.net
+
+    - Sign a certificate
+        - # puppetserver ca sign --certname puppet.local.net
+
+    - Revoke a certificate
+        - # puppetserver ca revoke --certname puppet.local.net
+
+    - Clean a certificate / remove it from directories
+        - # puppetserver ca clean --certname puppet.local.net
+
+PuppetClient:
+    - Install puppet (client)
+    - configure /etc/hosts with ip and name puppet
+    
+    - generate one certificate
+        - # puppet agent -t
+
+    - Sign the certificate in the server
+        - # puppetserver ca sign --certname puppetcl.local.net
+
+

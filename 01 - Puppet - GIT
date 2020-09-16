@@ -1,0 +1,42 @@
+In this example we are going to create:
+    - bare repository
+    - cloning
+    - using branches
+
+Step 01 => Creating a bare repository
+# git init --bare /opt/git/repos/control.git
+
+Step 02 => Cloning the repository into the development directory
+# git clone /opt/git/repos/control
+
+Step 03 => Copy all files from you previous directory into development directory
+           Add and commit files into git
+
+# git add *
+# git commit -m "first"
+# git push origin master
+
+# git remote -v
+
+Step 04 => creating a new environment into /etc/puppet
+# cd /etc/puppetlabs/codes/environments
+# git clone /opt/git/repos/control master
+# puppet agent -t --environment master
+
+Step 05 => Using branches on git to deal with changes
+# cd control
+# git branch production
+# git checkout production 
+# vi manifests/site.pp
+  change something
+# git add *
+# git commit -m "change in sites.pp"
+# git push origin production
+# cd /etc/puppetlabs/codes/environments
+# rm -rf production
+# git clone /opt/git/repos/control.git production
+
+
+
+ 
+

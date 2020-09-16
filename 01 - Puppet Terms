@@ -1,0 +1,59 @@
+This are commont terms used in puppet
+
+Node:
+    - Machines that you want configure/control with puppet
+
+Facts:
+    - Information about your node (IP,OS Type, etc)
+
+PuppetMaster:
+    - it is the server in charge to configure all your nodes
+    - it is a JRuby process that runs in a server (Java)
+
+PuppetDB:
+    - It is a DB that contain all information about nodes managed by PuppetMaster
+    - One server can deal with 5000 nodes
+    - You can choose to meka a separeted machine from the master to have the DB
+
+PuppetCA:
+    - It is a machine to deal with TLS CA/X.509, it is in charge to assign and revoke certificates (Certificate Authority) 
+    - It can be a separated machine as well
+    - Contains the puppet certs list
+    - All the comunication between the server and the node is done using TLS encryption
+DSL:
+    - Domain Specific Language, it is a kind of programming language
+    - In other words Puppet contains control structures and resources
+        - Control Structures are:
+            - if/else
+            - case
+        - Resources are:
+            - files
+            - packages
+            - services
+
+FileResource:
+file { 'hello':
+  path => '/tmp/hello',
+  content => "Hello World!\n",
+}
+
+
+Manifest:
+    - it is a puppet source file that contains tasks to be done
+    - it has a .pp extension
+    
+Metaparameters:
+    - before / require / notify / subscribe
+    - this are special parameter that helps you control the way your tasks are done, 
+      for example: task 1 is done BEFORE task 2, it is guaranteed by puppet
+
+Module:
+    - In simple words modules is a way to group manifests related with some task
+    - To create a module you create a directory and inside this directory you create a structure such as:
+        - files
+        - templates
+        - manifests
+    - into manifests direrctory create all the manifests that you wnat related to your module
+
+
+
